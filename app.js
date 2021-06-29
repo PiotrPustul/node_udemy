@@ -54,22 +54,23 @@ app.use(authRoutes);
 
 app.use(errorController.get404);
 
-mongoose.connect(MONGODB_URI,
-   { useUnifiedTopology: true, useNewUrlParser: true })
+mongoose
+   .connect(MONGODB_URI, { useUnifiedTopology: true, useNewUrlParser: true })
    .then(result => {
-      User.findOne()
-         .then(user => {
-            if (!user) {
-               const user = new User({
-                  name: 'Piotr',
-                  email: 'test@test.pl',
-                  cart: {
-                     items: []
-                  }
-               });
-               user.save();
-            }
-         });
+      // -------------- Tworzymy uzytkownika gdy nie mamy mozliwosci zalozenia konta na stronie
+      // User.findOne()
+      // .then(user => {
+      //    if (!user) {
+      //       const user = new User({
+      //          name: 'Piotr',
+      //          email: 'test@test.pl',
+      //          cart: {
+      //             items: []
+      //          }
+      //       });
+      //       user.save();
+      //    }
+      // });
       app.listen(3000);
    })
    .catch(err => {
