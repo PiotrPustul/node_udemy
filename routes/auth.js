@@ -22,10 +22,12 @@ router.post('/login', [
                   return Promise.reject('error', 'Invalid email or passworddd.');
                }
             })
-      }),
+      })
+      .normalizeEmail(),
    body('password')
       .isLength({ min: 5 })
       .withMessage('Invalid email or passworddd.')
+      .trim()
 ],
    authController.postLogin);
 
@@ -41,19 +43,23 @@ router.post('/signup', [
                );
             }
          });
-      }),
+      })
+      .normalizeEmail(),
    body(
       'password',
       'Please enter a password with only numbers and text and at least 5 characters.'
    )
       .isLength({ min: 5 })
-      .isAlphanumeric(),
-   body('confirmPassword').custom((value, { req }) => {
-      if (value !== req.body.password) {
-         throw new Error('Passwords have to match!');
-      }
-      return true;
-   })
+      .isAlphanumeric()
+      .trim(),
+   body('confirmPassword')
+      .trim()
+      .custom((value, { req }) => {
+         if (value !== req.body.password) {
+            throw new Error('Passwords have to match!');
+         }
+         return true;
+      })
 ],
    authController.postSignup
 );
